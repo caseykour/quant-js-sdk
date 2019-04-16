@@ -1,0 +1,14 @@
+{
+  "name": "quant-sdk",
+  "version": "1.0.0",
+  "description": "A common library for quantitative finance calculations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Casey Kour",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^6.1.3"
+  }
+}
