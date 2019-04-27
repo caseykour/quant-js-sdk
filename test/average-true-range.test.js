@@ -12,4 +12,19 @@ describe('average-true-range.calculator', () => {
 
     assert.equal(averageTrueRange, 0.25);
   });
+
+  it('should return keltner channel calculated value', () => {
+    let keltnerChannel =
+      atrCalculator.calculateKeltnerChannel(
+        historicalStockData,
+        2,
+        9,
+        1
+      );
+
+    assert.equal(0.25, keltnerChannel.currentAverageTrueRange);
+    assert.equal(279.4, keltnerChannel.currentEMA);
+    assert.equal(279.65, keltnerChannel.upperBand);
+    assert.equal(279.15, keltnerChannel.lowerBand);
+  });
 });

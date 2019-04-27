@@ -1,8 +1,10 @@
 'use strict'
 
-const length = 14;
+const emaCalculator = require('./exponential-moving-average.calculator');
 
-function calculateAverageTrueRangePrice(historicalPrices, precisionValue) {
+function calculateAverageTrueRangePrice(historicalPrices, precisionValue, length) {
+  length = length ? length : 14;
+
   if (historicalPrices.length < length) {
     throw Error(`Requires a historicalPrices.length minimum of ${length}.`);
   }
@@ -30,6 +32,34 @@ function calculateAverageTrueRangePrice(historicalPrices, precisionValue) {
   let averageTrueRange = ((previousTrueRange * offSetLength) + currentTrueRange) / length;
 
   return parseFloat(averageTrueRange).toFixed(precisionValue);
+}
+
+function calculateKeltnerChannel(historicalPrices, precisionValue, length, multiplierValue) {
+  multiplierValue = multiplierValue ? multiplierValue : 1;
+
+  let currentAverageTrueRange = 
+    calculateAverageTrueRangePrice(
+      historicalPrices, 
+      precisionValue, 
+      length
+    );
+
+  let currentEMA = emaCalculator
+    .calculateExponentialMovingAveragePrice(
+      historicalPrices, 
+      precisionValue, 
+      length
+    );
+
+  let upperBand = currentEMA + (multiplierValue * currentAverageTrueRange);
+  let lowerBand = currentEMA - (multiplierValue * currentAverageTrueRange);
+
+  return {
+    currentEMA : currentEMA,
+    currentAverageTrueRange: currentAverageTrueRange,
+    upperBand: parseFloat(upperBand.toFixed(precisionValue)),
+    lowerBand: parseFloat(lowerBand.toFixed(precisionValue))
+  }
 }
 
 function calculateTrueRange(previousPrice, currentPrice) {
@@ -70,7 +100,8 @@ function currentLowLessPreviousClose(previousPrice, currentPrice) {
 }
 
 const calculator = {
-  calculateAverageTrueRangePrice: calculateAverageTrueRangePrice
+  calculateAverageTrueRangePrice: calculateAverageTrueRangePrice,
+  calculateKeltnerChannel: calculateKeltnerChannel
 }
 
 module.exports = calculator;

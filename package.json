@@ -1,6 +1,6 @@
 {
   "name": "quant-sdk",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A common library for quantitative finance calculations.",
   "main": "index.js",
   "scripts": {
