@@ -63,28 +63,11 @@ function calculateKeltnerChannel(historicalPrices, precisionValue, length, multi
 }
 
 function calculateTrueRange(previousPrice, currentPrice) {
-  let currentTrueRange = 1.0;
-
-  if ((currentPrice.h > previousPrice.h && currentPrice.l < previousPrice.l) || (currentPrice.c === previousPrice.c)) {
-    currentTrueRange =
-      currentHighLessCurrentLow(currentPrice);
-
-  } else if (currentPrice.c > previousPrice.c) {
-    currentTrueRange =
-      currentHighLessPreviousClose(
-        previousPrice,
-        currentPrice
-      );
-
-  } else if (currentPrice.c < previousPrice.c) {
-    currentTrueRange =
-      currentLowLessPreviousClose(
-        previousPrice,
-        currentPrice
-      );
-  }
-
-  return currentTrueRange;
+  return Math.max(
+    currentHighLessCurrentLow(currentPrice),
+    currentHighLessPreviousClose(previousPrice, currentPrice),
+    currentLowLessPreviousClose(previousPrice, currentPrice)
+  );
 }
 
 function currentHighLessCurrentLow(currentPrice) {
@@ -92,11 +75,11 @@ function currentHighLessCurrentLow(currentPrice) {
 }
 
 function currentHighLessPreviousClose(previousPrice, currentPrice) {
-  return currentPrice.h - previousPrice.c;
+  return Math.abs(currentPrice.h - previousPrice.c);
 }
 
 function currentLowLessPreviousClose(previousPrice, currentPrice) {
-  return  previousPrice.c - currentPrice.l;
+  return Math.abs(currentPrice.l - previousPrice.c);
 }
 
 const calculator = {
