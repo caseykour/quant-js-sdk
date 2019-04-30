@@ -1,5 +1,5 @@
 const assert = require('assert');
-const historicalStockData = require('./data/forex-usdcad-15min.data.json').results;
+const historicalStockData = require('./data/forex-audusd-15min.data.json').results;
 const rsiCalculator = require('../src/relative-strength-index.calculator');
 
 describe('relative strength index calculator', () => {
